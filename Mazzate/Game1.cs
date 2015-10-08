@@ -34,7 +34,7 @@ namespace Mazzate
         protected override void Initialize()
         {
             int numeroGiocatori = 2;
-            int guerrieriPerGiocatore = 2;
+            int guerrieriPerGiocatore = 6;
 
             for (int i = 0; i < numeroGiocatori; i++)
             {
@@ -44,13 +44,12 @@ namespace Mazzate
             foreach (Giocatore giocatore in listaGiocatori)
             {
                 giocatore.creaGuerrieri(guerrieriPerGiocatore);
-                foreach (Guerriero guerriero in giocatore.listaGuerrieri) {
-                    guerriero.coordSpawnGuerriero(giocatore.colore, this);
-                }
                 tuttiGuerrieri.AddRange(giocatore.listaGuerrieri);
+                mngGuerrieri.SpawnaGuerrieri(giocatore, guerrieriPerGiocatore, graphics.GraphicsDevice.Viewport.Bounds );
             }
             //mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
-
+            Console.WriteLine("client " + Window.ClientBounds + " view " + graphics.GraphicsDevice.Viewport.Bounds);
+           
             base.Initialize();
         }
 

@@ -16,7 +16,7 @@ namespace Mazzate
             checkCollisione = false;
             orientamento = 0;
 
-            velMovimento = 1;
+            velMovimento = 0;
             morale = mor;
             puntiVita = hp;
             abilitaTipoDanno = new int[3];
@@ -26,22 +26,7 @@ namespace Mazzate
             Array.Clear(abilitaTipoDanno, 0, abilitaTipoDanno.Length);
         }
 
-        /// <summary>Crea le coordinate dove spawnerà il guerriero e le setta in .posizione</summary>
-        public void coordSpawnGuerriero(Colore coloreGiocatore, Game1 game)
-        {
-            int rnd = -1;
-            while (rnd < 64 || rnd > game.Window.ClientBounds.Right - 64)
-            {
-                rnd = rand.Next(0, (game.Window.ClientBounds.Right));
-            }
-            int xSpawn = rnd;
-            int ySpawn;
-
-            if (coloreGiocatore == Colore.rosso) ySpawn = 32;
-            else ySpawn = game.Window.ClientBounds.Bottom - 32;
-
-            this.posizione = new Vector2(xSpawn, ySpawn);
-        }
+        
 
         /// <summary>Restituisce il nemico più vicino</summary>
         public void nemicoPiuVicino(List<Guerriero> listGuerNem)

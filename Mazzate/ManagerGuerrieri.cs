@@ -9,10 +9,27 @@ namespace Mazzate
 {
     public class ManagerGuerrieri
     {
+        static Random rand = new Random();
+
         public ManagerGuerrieri()
         {
 
 
+        }
+
+        /// <summary>Crea le coordinate dove spawnerà il guerriero e le setta in .posizione</summary>
+        public void SpawnaGuerrieri(Giocatore gioc, int guerPerGioc, Rectangle schermo)
+        {
+            int sezione = schermo.Width / guerPerGioc;
+
+            for (int i = 0; i < guerPerGioc; i++)
+            {
+                int ySpawn = gioc.colore == Colore.rosso ? 32 : schermo.Height - 32;
+                int gni = i * sezione + 32;
+                int gnu = (i + 1) * sezione - 32;
+                gioc.listaGuerrieri[i].posizione = new Vector2(rand.Next(gni,gnu), ySpawn);
+            }
+            gioc.listaGuerrieri[guerPerGioc-1].posizione = new Vector2(schermo.Width, 64);
         }
 
         public void sistemaCollisioni(List<Guerriero> listGuer)
