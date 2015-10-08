@@ -19,9 +19,9 @@ namespace Mazzate
     public class Giocatore
     {
 
-        public Giocatore (Colore id, List<Guerriero> lisGuerrieri) {
+        public Giocatore (Colore id, List<Guerriero> listGuer) {
             colore = id;
-            listaGuerrieri = lisGuerrieri;
+            listaGuerrieri = listGuer;
         }
         
         public void creaGuerrieri(int nGuerrieri)

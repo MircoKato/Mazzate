@@ -34,7 +34,7 @@ namespace Mazzate
         protected override void Initialize()
         {
             int numeroGiocatori = 2;
-            int guerrieriPerGiocatore = 3;
+            int guerrieriPerGiocatore = 2;
 
             for (int i = 0; i < numeroGiocatori; i++)
             {
@@ -85,15 +85,22 @@ namespace Mazzate
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            foreach (Guerriero guerriero in tuttiGuerrieri) { if (guerriero.nuovaPosizione.X > -10 && guerriero.nuovaPosizione.Y > -10) { guerriero.posizione = guerriero.nuovaPosizione; guerriero.nuovaPosizione = new Point(-1); } };
+            // Se non sono nel primo ciclo, copio .nuovaPosizione in .posizione, rendendo vecchia quella del Update precedente
+            foreach (Guerriero guerriero in tuttiGuerrieri) { if (guerriero.nuovaPosizione.X > -10 && guerriero.nuovaPosizione.Y > -10) { guerriero.posizione = guerriero.nuovaPosizione; guerriero.nuovaPosizione = new Vector2(-1); } };
 
-            foreach (Guerriero guerriero in listaGiocatori[0].listaGuerrieri) { guerriero.nuovaPosizione = guerriero.posizione + new Point(0, 2); }
-            foreach (Guerriero guerriero in listaGiocatori[1].listaGuerrieri) { guerriero.nuovaPosizione = guerriero.posizione + new Point(0, -2); }
+            foreach (Guerriero guerriero in listaGiocatori[0].listaGuerrieri) {
+                guerriero.nemicoPiuVicino(listaGiocatori[1].listaGuerrieri);
+                guerriero.muoviVersoNemico(guerriero.obiettivo);
+            }
+            foreach (Guerriero guerriero in listaGiocatori[1].listaGuerrieri) {
+                guerriero.nemicoPiuVicino(listaGiocatori[0].listaGuerrieri);
+                guerriero.muoviVersoNemico(guerriero.obiettivo);
+            }
 
             mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
             mngGuerrieri.impedisciUscitaSchermo(tuttiGuerrieri, this);
 
-            Console.WriteLine("pos 0: " + tuttiGuerrieri[0].nuovaPosizione.Y + "pos 3: " + tuttiGuerrieri[3].nuovaPosizione.Y);
+            //Console.WriteLine("pos 0: " + tuttiGuerrieri[0].nuovaPosizione.Y +" "+ tuttiGuerrieri[0].orientamento);
 
             base.Update(gameTime);
         }
@@ -112,6 +119,7 @@ namespace Mazzate
             Color colore;
             SpriteEffects flip;
             int j = 0;
+            Vector2 origine;
 
             foreach (Giocatore giocatore in listaGiocatori)
             {
@@ -125,11 +133,11 @@ namespace Mazzate
                 j++;
                 foreach (Guerriero guerriero in giocatore.listaGuerrieri)
                 {
-
-                    dstRect = new Rectangle(guerriero.nuovaPosizione, new Point(64, 64));
+                    dstRect = new Rectangle(guerriero.nuovaPosizione.ToPoint(), new Point(64, 64));
                     srcRect = new Rectangle(i * 64, 0, 64, 64);
+                    origine = srcRect.Center.ToVector2();
 
-                    spriteBatch.Draw(spriteSheet, dstRect, srcRect, colore, 0f, Vector2.Zero, flip, 0f);
+                    spriteBatch.Draw(spriteSheet, dstRect, srcRect, colore, 0f/*guerriero.guardaNemico(guerriero.obiettivo)*/, origine, flip, 0f);
                     i++;
                 }
             }
