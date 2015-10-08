@@ -16,7 +16,7 @@ namespace Mazzate
             checkCollisione = false;
             orientamento = 0;
 
-            velMovimento = 0;
+            velMovimento = 1;
             morale = mor;
             puntiVita = hp;
             abilitaTipoDanno = new int[3];
@@ -34,7 +34,7 @@ namespace Mazzate
             {
                 rnd = rand.Next(0, (game.Window.ClientBounds.Right));
             }
-            int xSpawn = rnd; //64 * (int)(rnd / 64);
+            int xSpawn = rnd;
             int ySpawn;
 
             if (coloreGiocatore == Colore.rosso) ySpawn = 32;

@@ -49,7 +49,7 @@ namespace Mazzate
                 }
                 tuttiGuerrieri.AddRange(giocatore.listaGuerrieri);
             }
-            mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
+            //mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
 
             base.Initialize();
         }
