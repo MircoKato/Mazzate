@@ -34,7 +34,7 @@ namespace Mazzate
         protected override void Initialize()
         {
             int numeroGiocatori = 2;
-            int guerrieriPerGiocatore = 6;
+            int guerrieriPerGiocatore = 3;
 
             for (int i = 0; i < numeroGiocatori; i++)
             {

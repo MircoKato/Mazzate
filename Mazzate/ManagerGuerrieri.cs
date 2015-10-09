@@ -29,7 +29,7 @@ namespace Mazzate
                 int gnu = (i + 1) * sezione - 32;
                 gioc.listaGuerrieri[i].posizione = new Vector2(rand.Next(gni,gnu), ySpawn);
             }
-            gioc.listaGuerrieri[guerPerGioc-1].posizione = new Vector2(schermo.Width, 64);
+            //gioc.listaGuerrieri[guerPerGioc-1].posizione = new Vector2(schermo.Width, 64);
         }
 
         public void sistemaCollisioni(List<Guerriero> listGuer)
