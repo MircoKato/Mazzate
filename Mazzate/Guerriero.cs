@@ -16,7 +16,7 @@ namespace Mazzate
             checkCollisione = false;
             orientamento = 0;
 
-            velMovimento = 1;
+            velMovimento = 2;
             morale = mor;
             puntiVita = hp;
             abilitaTipoDanno = new int[3];

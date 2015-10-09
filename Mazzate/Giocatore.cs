@@ -19,11 +19,12 @@ namespace Mazzate
     public class Giocatore
     {
 
-        public Giocatore (Colore id, List<Guerriero> listGuer) {
+        public Giocatore (Colore id) {
             colore = id;
-            listaGuerrieri = listGuer;
+            //listaGuerrieri = listGuer;
         }
         
+        /*
         public void creaGuerrieri(int nGuerrieri)
         {
             for (int j = 0; j < nGuerrieri; j++)
@@ -32,10 +33,11 @@ namespace Mazzate
             }
             return;
         }
+        */
 
 
         public Colore colore { get; set; }
-        public List<Guerriero> listaGuerrieri { get; set; }
+        //public List<Guerriero> listaGuerrieri { get; set; }
     }
 
 

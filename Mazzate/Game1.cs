@@ -16,12 +16,15 @@ namespace Mazzate
         SpriteBatch spriteBatch;
         Texture2D spriteSheet;
         List<Giocatore> listaGiocatori = new List<Giocatore>();
-        List<Guerriero> tuttiGuerrieri = new List<Guerriero>();
-        ManagerGuerrieri mngGuerrieri = new ManagerGuerrieri();
+        //List<Guerriero> tuttiGuerrieri = new List<Guerriero>();
+        ManagerGuerrieri mngGuerrieri;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferWidth = 1024;  // set this value to the desired width of your window
+            graphics.PreferredBackBufferHeight = 576;   // set this value to the desired height of your window
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
         }
 
@@ -36,18 +39,16 @@ namespace Mazzate
             int numeroGiocatori = 2;
             int guerrieriPerGiocatore = 3;
 
-            for (int i = 0; i < numeroGiocatori; i++)
-            {
-                listaGiocatori.Add(new Giocatore((Colore)i, new List<Guerriero>()));
-            }
+            mngGuerrieri = new ManagerGuerrieri(numeroGiocatori);
+
+            for (int i = 0; i < numeroGiocatori; i++) { listaGiocatori.Add(new Giocatore((Colore)i)); }
 
             foreach (Giocatore giocatore in listaGiocatori)
             {
-                giocatore.creaGuerrieri(guerrieriPerGiocatore);
-                tuttiGuerrieri.AddRange(giocatore.listaGuerrieri);
-                mngGuerrieri.SpawnaGuerrieri(giocatore, guerrieriPerGiocatore, graphics.GraphicsDevice.Viewport.Bounds );
+                mngGuerrieri.creaGuerrieri(giocatore.colore, guerrieriPerGiocatore);
+                mngGuerrieri.posizionaGuerrieri(giocatore.colore, guerrieriPerGiocatore, graphics.GraphicsDevice.Viewport.Bounds );
             }
-            //mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
+
             Console.WriteLine("client " + Window.ClientBounds + " view " + graphics.GraphicsDevice.Viewport.Bounds);
            
             base.Initialize();
@@ -71,7 +72,7 @@ namespace Mazzate
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+            base.UnloadContent();
         }
 
         /// <summary>
@@ -84,20 +85,19 @@ namespace Mazzate
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // Se non sono nel primo ciclo, copio .nuovaPosizione in .posizione, rendendo vecchia quella del Update precedente
-            foreach (Guerriero guerriero in tuttiGuerrieri) { if (guerriero.nuovaPosizione.X > -10 && guerriero.nuovaPosizione.Y > -10) { guerriero.posizione = guerriero.nuovaPosizione; guerriero.nuovaPosizione = new Vector2(-1); } };
+            mngGuerrieri.svecchiaPosizione();
 
-            foreach (Guerriero guerriero in listaGiocatori[0].listaGuerrieri) {
-                guerriero.nemicoPiuVicino(listaGiocatori[1].listaGuerrieri);
+            foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[0]) {
+                guerriero.nemicoPiuVicino(mngGuerrieri.arrayGuerrieri[1]);
                 guerriero.muoviVersoNemico(guerriero.obiettivo);
             }
-            foreach (Guerriero guerriero in listaGiocatori[1].listaGuerrieri) {
-                guerriero.nemicoPiuVicino(listaGiocatori[0].listaGuerrieri);
+            foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[1]) {
+                guerriero.nemicoPiuVicino(mngGuerrieri.arrayGuerrieri[0]);
                 guerriero.muoviVersoNemico(guerriero.obiettivo);
             }
 
-            mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
-            mngGuerrieri.impedisciUscitaSchermo(tuttiGuerrieri, this);
+            //mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
+            //mngGuerrieri.impedisciUscitaSchermo(tuttiGuerrieri, this);
 
             //Console.WriteLine("pos 0: " + tuttiGuerrieri[0].nuovaPosizione.Y +" "+ tuttiGuerrieri[0].orientamento);
 
@@ -130,13 +130,13 @@ namespace Mazzate
                     default: colore = Color.White; flip = SpriteEffects.None; break;
                 }
                 j++;
-                foreach (Guerriero guerriero in giocatore.listaGuerrieri)
+                foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[(int)giocatore.colore])
                 {
-                    dstRect = new Rectangle(guerriero.nuovaPosizione.ToPoint(), new Point(64, 64));
+                    dstRect = new Rectangle((int)guerriero.nuovaPosizione.X, (int)guerriero.nuovaPosizione.Y, 64, 64);
                     srcRect = new Rectangle(i * 64, 0, 64, 64);
                     origine = srcRect.Center.ToVector2();
 
-                    spriteBatch.Draw(spriteSheet, dstRect, srcRect, colore, 0f/*guerriero.guardaNemico(guerriero.obiettivo)*/, origine, flip, 0f);
+                    spriteBatch.Draw(spriteSheet, dstRect, srcRect, colore, 0f/*guerriero.guardaNemico(guerriero.obiettivo), origine*/, new Vector2(), flip, 0f);
                     i++;
                 }
             }
