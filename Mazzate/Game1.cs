@@ -96,8 +96,8 @@ namespace Mazzate
                 guerriero.muoviVersoNemico(guerriero.obiettivo);
             }
 
-            //mngGuerrieri.sistemaCollisioni(tuttiGuerrieri);
-            //mngGuerrieri.impedisciUscitaSchermo(tuttiGuerrieri, this);
+            mngGuerrieri.sistemaCollisioni(mngGuerrieri.arrayGuerrieri);
+            mngGuerrieri.impedisciUscitaSchermo(mngGuerrieri.arrayGuerrieri, graphics.GraphicsDevice.Viewport.Bounds);
 
             //Console.WriteLine("pos 0: " + tuttiGuerrieri[0].nuovaPosizione.Y +" "+ tuttiGuerrieri[0].orientamento);
 

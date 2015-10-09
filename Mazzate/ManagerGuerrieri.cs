@@ -63,24 +63,20 @@ namespace Mazzate
 
         public void sistemaCollisioni(List<Guerriero>[] arrayGuer)
         {
-            List<Guerriero> lisTempUno = (List<Guerriero>)(arrayGuer[0].Concat(arrayGuer[1]));
-            List<Guerriero> lisTempDue = (List<Guerriero>)(arrayGuer[0].Concat(arrayGuer[1]));
-            int idx = 0;
-            bool collide;
-            List<int> listaIndici = new List<int>();
+            List<Guerriero> lisTempUno = new List<Guerriero>();
+            lisTempUno.AddRange(arrayGuer[0]);
+            lisTempUno.AddRange(arrayGuer[1]);
+
             foreach (Guerriero guerDaCheck in lisTempUno)
             {
-                collide = false;
                 Rectangle rectUno = new Rectangle((int)guerDaCheck.nuovaPosizione.X - 32, (int)guerDaCheck.nuovaPosizione.Y - 32, 64, 64);
-                foreach (Guerriero guerLista in lisTempDue)
+                foreach (Guerriero guerLista in lisTempUno)
                 {
+                    if (guerDaCheck.Equals(guerLista)) continue;
                     Rectangle rectDue = new Rectangle((int)guerLista.nuovaPosizione.X - 32, (int)guerLista.nuovaPosizione.Y - 32, 64, 64);
-                    if (rectUno.Intersects(rectDue)) { collide = true; listaIndici.Add(idx); }
+                    if (rectUno.Intersects(rectDue)) { guerDaCheck.nuovaPosizione = guerDaCheck.posizione; break; }
                 }
-                if (collide) lisTempDue.RemoveAt(idx);
-                idx++;
             }
-            //Console.WriteLine("guerdacheck " + nGuerDaCheck + " guerLista " + nGuerLista);
         }
 
         public void resettaCheckCollisione(List<Guerriero> listGuer)
@@ -92,19 +88,28 @@ namespace Mazzate
         }
 
         /// <summary>Non funziona :(</summary>
-        public void impedisciUscitaSchermo(List<Guerriero> listGuer, Game1 game)
+        public void impedisciUscitaSchermo(List<Guerriero>[] listGuer, Rectangle schermo)
         {
-            foreach (Guerriero guerDaCheck in listGuer)
-            {
-                if (guerDaCheck.nuovaPosizione.Y > game.Window.ClientBounds.Bottom - 32 || guerDaCheck.nuovaPosizione.Y < game.Window.ClientBounds.Top + 32)
+            for (int i=0; i < listGuer.Count(); i++) {
+                foreach (Guerriero guerDaCheck in listGuer[i])
                 {
-                    guerDaCheck.nuovaPosizione = guerDaCheck.nuovaPosizione - new Vector2(0, guerDaCheck.velMovimento);
+                    if (guerDaCheck.nuovaPosizione.Y > schermo.Bottom - 64)
+                    {
+                        guerDaCheck.nuovaPosizione -= new Vector2(0, guerDaCheck.nuovaPosizione.Y - guerDaCheck.posizione.Y);
+                    }
+                    if (guerDaCheck.nuovaPosizione.Y < schermo.Top + 0)
+                    {
+                        guerDaCheck.nuovaPosizione -= new Vector2(0, guerDaCheck.nuovaPosizione.Y - guerDaCheck.posizione.Y);
+                    }
+                    if (guerDaCheck.nuovaPosizione.X > schermo.Right - 64)
+                    {
+                        guerDaCheck.nuovaPosizione -= new Vector2(guerDaCheck.nuovaPosizione.X - guerDaCheck.posizione.X, 0);
+                    }
+                    if (guerDaCheck.nuovaPosizione.X < schermo.Left + 64)
+                    {
+                        guerDaCheck.nuovaPosizione -= new Vector2(guerDaCheck.nuovaPosizione.X - guerDaCheck.posizione.X, 0);
+                    }
                 }
-                if (guerDaCheck.nuovaPosizione.X > game.Window.ClientBounds.Right - 32 || guerDaCheck.nuovaPosizione.X < game.Window.ClientBounds.Left + 32)
-                {
-                    guerDaCheck.nuovaPosizione = guerDaCheck.posizione - new Vector2(guerDaCheck.velMovimento,0);
-                }
-
             }
         }
 
