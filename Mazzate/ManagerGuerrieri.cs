@@ -97,15 +97,15 @@ namespace Mazzate
                     {
                         guerDaCheck.nuovaPosizione -= new Vector2(0, guerDaCheck.nuovaPosizione.Y - guerDaCheck.posizione.Y);
                     }
-                    if (guerDaCheck.nuovaPosizione.Y < schermo.Top + 0)
+                    if (guerDaCheck.nuovaPosizione.Y < schermo.Top)
                     {
                         guerDaCheck.nuovaPosizione -= new Vector2(0, guerDaCheck.nuovaPosizione.Y - guerDaCheck.posizione.Y);
                     }
-                    if (guerDaCheck.nuovaPosizione.X > schermo.Right - 64)
+                    if (guerDaCheck.nuovaPosizione.X > schermo.Right -64)
                     {
                         guerDaCheck.nuovaPosizione -= new Vector2(guerDaCheck.nuovaPosizione.X - guerDaCheck.posizione.X, 0);
                     }
-                    if (guerDaCheck.nuovaPosizione.X < schermo.Left + 64)
+                    if (guerDaCheck.nuovaPosizione.X < schermo.Left)
                     {
                         guerDaCheck.nuovaPosizione -= new Vector2(guerDaCheck.nuovaPosizione.X - guerDaCheck.posizione.X, 0);
                     }
