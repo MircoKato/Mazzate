@@ -34,13 +34,14 @@ namespace Mazzate
 
             switch (tArma)
             {
-                case categoria.manoSingola: lunghezza = 1; break;
-                case categoria.manoDoppia: lunghezza = 2; break;
-                case categoria.lunga: lunghezza = 3; break;
-                case categoria.daLancio: lunghezza = 4; break;
-                case categoria.daTiro: lunghezza = 5; break;
-                case categoria.scudo: lunghezza = 0; break;
+                case categoria.manoSingola: portata = 1; break;
+                case categoria.manoDoppia: portata = 2; break;
+                case categoria.lunga: portata = 3; break;
+                case categoria.daLancio: portata = 4; break;
+                case categoria.daTiro: portata = 5; break;
+                case categoria.scudo: portata = 0.5f; break;
             }
+            portata *= 64;
         }
 
 
@@ -48,7 +49,7 @@ namespace Mazzate
         public int fatica { get; set; }
         public danno tipoDanno { get; set; }
         public categoria tipoArma { get; set; }
-        public int lunghezza { get; set; }
+        public float portata { get; set; }
     }
 
 }

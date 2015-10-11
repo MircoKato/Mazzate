@@ -26,6 +26,7 @@ namespace Mazzate
             graphics.PreferredBackBufferHeight = 576;   // set this value to the desired height of your window
             graphics.ApplyChanges();
             Content.RootDirectory = "Content";
+            IsMouseVisible = true;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace Mazzate
             int numeroGiocatori = 2;
             int guerrieriPerGiocatore = 3;
 
-            mngGuerrieri = new ManagerGuerrieri(numeroGiocatori);
+            mngGuerrieri = new ManagerGuerrieri(numeroGiocatori, this);
 
             for (int i = 0; i < numeroGiocatori; i++) { listaGiocatori.Add(new Giocatore((Colore)i)); }
 
@@ -49,8 +50,8 @@ namespace Mazzate
                 mngGuerrieri.posizionaGuerrieri(giocatore.colore, guerrieriPerGiocatore, graphics.GraphicsDevice.Viewport.Bounds );
             }
 
-            Console.WriteLine("client " + Window.ClientBounds + " view " + graphics.GraphicsDevice.Viewport.Bounds);
-           
+            Components.Add(mngGuerrieri);
+
             base.Initialize();
         }
 
@@ -86,7 +87,7 @@ namespace Mazzate
                 Exit();
 
             mngGuerrieri.svecchiaPosizione();
-
+            /*
             foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[0]) {
                 guerriero.nemicoPiuVicino(mngGuerrieri.arrayGuerrieri[1]);
                 guerriero.muoviVersoNemico(guerriero.obiettivo);
@@ -97,9 +98,8 @@ namespace Mazzate
             }
 
             mngGuerrieri.sistemaCollisioni(mngGuerrieri.arrayGuerrieri);
+            */
             mngGuerrieri.impedisciUscitaSchermo(mngGuerrieri.arrayGuerrieri, graphics.GraphicsDevice.Viewport.Bounds);
-
-            //Console.WriteLine("pos 0: " + tuttiGuerrieri[0].nuovaPosizione.Y +" "+ tuttiGuerrieri[0].orientamento);
 
             base.Update(gameTime);
         }

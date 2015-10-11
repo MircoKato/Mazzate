@@ -9,16 +9,18 @@ namespace Mazzate
 {
     public class Guerriero
     {
-        public Guerriero(int mor, int hp)
+        public Guerriero(int mor, int hp, Arma ar)
         {
             posizione = new Vector2(-1);
             nuovaPosizione = new Vector2(-10);
-            checkCollisione = false;
-            orientamento = 0;
+            //orientamento = 0;
+            collide = false;
+            ingaggia = false;
 
             velMovimento = 3;
             morale = mor;
             puntiVita = hp;
+            arma = ar;
             abilitaTipoDanno = new int[3];
             abilitaTipoArma = new int[6];
 
@@ -61,20 +63,36 @@ namespace Mazzate
             Vector2 direzione = guerNem.posizione - this.posizione;
             direzione.Normalize();
 
+            float distanza = Vector2.Distance(this.posizione, guerNem.posizione);
+            if (distanza < this.arma.portata)
+            {
+                this.velMovimento = 0;
+            }
+            else
+            { 
+                if (distanza < this.obiettivo.arma.portata)
+                {
+                    this.velMovimento = 1;
+                    if (distanza < 64) this.velMovimento = 0;
+                }
+            }
+            
+
             this.nuovaPosizione = this.posizione + direzione * this.velMovimento;
         }
 
-
         public Vector2 posizione { get; set; }
         public Vector2 nuovaPosizione { get; set; }
-        public bool checkCollisione { get; set; }
-        public float orientamento { get; set; }
+        public bool collide { get; set; }
+        public bool ingaggia { get; set; }
+        //public float orientamento { get; set; }
 
         public Guerriero obiettivo { get; set; }
 
         public int morale { get; set; }
         public int puntiVita { get; set; }
         public int velMovimento { get; set; }
+        public Arma arma { get; set; }
 
         public int[] abilitaTipoDanno; // Taglio Perforazione Impatto
         public int[] abilitaTipoArma; // 1mano 2mani Lunghe Lancio Tiro Scudi

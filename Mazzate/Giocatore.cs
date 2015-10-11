@@ -11,7 +11,7 @@ namespace Mazzate
     public enum Colore
     {
         rosso,
-        blu,
+        blu, 
         giallo,
         verde
     }
@@ -24,20 +24,7 @@ namespace Mazzate
             //listaGuerrieri = listGuer;
         }
         
-        /*
-        public void creaGuerrieri(int nGuerrieri)
-        {
-            for (int j = 0; j < nGuerrieri; j++)
-            {
-                listaGuerrieri.Add(new Guerriero(100*j, 100*j));
-            }
-            return;
-        }
-        */
-
-
         public Colore colore { get; set; }
-        //public List<Guerriero> listaGuerrieri { get; set; }
     }
 
 
