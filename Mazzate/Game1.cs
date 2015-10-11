@@ -63,7 +63,7 @@ namespace Mazzate
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteSheet = Content.Load<Texture2D>(@"immagini\guerrieri_1.2");
+            spriteSheet = Content.Load<Texture2D>(@"immagini\guerrieri_2");
 
         }
 
@@ -115,11 +115,11 @@ namespace Mazzate
 
             Rectangle dstRect;
             Rectangle srcRect;
-            Color colore;
-            SpriteEffects flip;
-            int j = 0;
-            Vector2 origine;
+            //SpriteEffects flip;
+            //int j = 0;
+            //Vector2 origine;
 
+            /*
             foreach (Giocatore giocatore in listaGiocatori)
             {
                 int i = 0;
@@ -129,17 +129,28 @@ namespace Mazzate
                     case 1: colore = Color.DarkBlue; flip = SpriteEffects.None; break;
                     default: colore = Color.White; flip = SpriteEffects.None; break;
                 }
-                j++;
-                foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[(int)giocatore.colore])
-                {
-                    dstRect = new Rectangle((int)guerriero.nuovaPosizione.X, (int)guerriero.nuovaPosizione.Y, 64, 64);
-                    srcRect = new Rectangle(i * 64, 0, 64, 64);
-                    origine = srcRect.Center.ToVector2();
+                j++;*/
+            int i = 0;
+            foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[0])
+            {
+                dstRect = new Rectangle((int)guerriero.nuovaPosizione.X, (int)guerriero.nuovaPosizione.Y, 64, 64);
+                srcRect = new Rectangle(i * 64, 64, 64, 64);
+                //origine = srcRect.Center.ToVector2();
 
-                    spriteBatch.Draw(spriteSheet, dstRect, srcRect, colore, 0f/*guerriero.guardaNemico(guerriero.obiettivo), origine*/, new Vector2(), flip, 0f);
-                    i++;
-                }
+                spriteBatch.Draw(spriteSheet, dstRect, srcRect, Color.White, 0f/*guerriero.guardaNemico(guerriero.obiettivo), origine*/, new Vector2(), SpriteEffects.FlipVertically, 0f);
+                i++;
             }
+            i = 0;
+            foreach (Guerriero guerriero in mngGuerrieri.arrayGuerrieri[1])
+            {
+                dstRect = new Rectangle((int)guerriero.nuovaPosizione.X, (int)guerriero.nuovaPosizione.Y, 64, 64);
+                srcRect = new Rectangle(i * 64, 0, 64, 64);
+                //origine = srcRect.Center.ToVector2();
+
+                spriteBatch.Draw(spriteSheet, dstRect, srcRect, Color.White, 0f/*guerriero.guardaNemico(guerriero.obiettivo), origine*/, new Vector2(), SpriteEffects.None, 0f);
+                i++;
+            }
+            //}
 
             spriteBatch.End();
             base.Draw(gameTime);

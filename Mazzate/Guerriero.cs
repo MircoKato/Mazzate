@@ -9,7 +9,7 @@ namespace Mazzate
 {
     public class Guerriero
     {
-        public Guerriero(int mor, int hp, Arma ar)
+        public Guerriero(int mor, int hp, int pVel, int pEne, Arma ar)
         {
             posizione = new Vector2(-1);
             nuovaPosizione = new Vector2(-10);
@@ -20,6 +20,10 @@ namespace Mazzate
             velMovimento = 3;
             morale = mor;
             puntiVita = hp;
+
+            puntiVelocità = pVel;
+            puntiEnergia = pEne;
+
             arma = ar;
             abilitaTipoDanno = new int[3];
             abilitaTipoArma = new int[6];
@@ -46,7 +50,8 @@ namespace Mazzate
                     //Console.WriteLine("distPiuVicino " + distPiuVicino);
                 }
             }
-            this.obiettivo = listGuerNem[idx];
+            if (idx >= 0) obiettivo = listGuerNem[idx];
+            else obiettivo = null;
         }
 
         /// <summary>Restituisce l'angolo (in radianti) tra guerriero e nemico</summary>
@@ -63,22 +68,47 @@ namespace Mazzate
             Vector2 direzione = guerNem.posizione - this.posizione;
             direzione.Normalize();
 
-            float distanza = Vector2.Distance(this.posizione, guerNem.posizione);
+            //float distanza = Vector2.Distance(this.posizione, guerNem.posizione);
+            float distanza = dist(this, guerNem);
+
+            //Console.WriteLine("Distanza " + distanza);
+
+            int velo = velMovimento;
+
             if (distanza < this.arma.portata)
             {
-                this.velMovimento = 0;
+                velo = 0;
             }
             else
             { 
                 if (distanza < this.obiettivo.arma.portata)
                 {
-                    this.velMovimento = 1;
-                    if (distanza < 64) this.velMovimento = 0;
+                    velo = 1;
+                    if (distanza <= 65) velo = 0;
                 }
             }
-            
+            this.nuovaPosizione = this.posizione + direzione * velo;
+        }
 
-            this.nuovaPosizione = this.posizione + direzione * this.velMovimento;
+        public void attacca (Guerriero gNem) //, List<Guerriero>[] arrayG)
+        {
+            if (dist(this, gNem) < this.arma.portata && puntiEnergia > this.arma.fatica && puntiVelocità > arma.velocita)
+            {
+                puntiEnergia -= this.arma.fatica; if (puntiEnergia < 0) puntiEnergia = 0;
+                puntiVelocità = 0;
+                gNem.puntiVita -= this.arma.danno; if (puntiVita < 0) puntiVita = 0;
+                //if (gNem.puntiVita <= 0) gNem.muore(gNem, arrayG);
+            }
+        }
+
+        public void muore (Guerriero gNem, List<Guerriero>[] arrayG)
+        {
+            Console.WriteLine("Guerriero " + this + " è morto.");
+        }
+
+        public float dist (Guerriero gUno, Guerriero gDue)
+        {
+            return Vector2.Distance(gUno.posizione, gDue.posizione);
         }
 
         public Vector2 posizione { get; set; }
@@ -88,6 +118,9 @@ namespace Mazzate
         //public float orientamento { get; set; }
 
         public Guerriero obiettivo { get; set; }
+
+        public int puntiVelocità { get; set; }
+        public int puntiEnergia { get; set; }
 
         public int morale { get; set; }
         public int puntiVita { get; set; }

@@ -24,10 +24,11 @@ namespace Mazzate
                 List<Guerriero> listaGuerrieri = new List<Guerriero>();
                 for (int j = 0; j < nGuerrieri; j++)
                 {
-                switch (j) {
-                    case 0: listaGuerrieri.Add(new Guerriero(100, 100, new Arma(categoria.manoSingola, danno.taglio, 1, 2))); break;
-                    case 1: listaGuerrieri.Add(new Guerriero(100, 100, new Arma(categoria.manoDoppia, danno.taglio, 1, 2))); break;
-                    case 2: listaGuerrieri.Add(new Guerriero(100, 100, new Arma(categoria.lunga, danno.taglio, 1, 2))); break;
+                int tipoGuerriero = rand.Next(3);
+                switch (tipoGuerriero) {
+                    case 0: listaGuerrieri.Add(new Guerriero(100, 100, 100, 100, new Arma(categoria.manoSingola, tipoDanno.impatto, 10, 10, 10))); break;
+                    case 1: listaGuerrieri.Add(new Guerriero(100, 100, 100, 100, new Arma(categoria.manoDoppia, tipoDanno.taglio, 30, 30, 30))); break;
+                    case 2: listaGuerrieri.Add(new Guerriero(100, 100, 100, 100, new Arma(categoria.lunga, tipoDanno.perforazione, 20, 20, 20))); break;
                 }
                     
                 }
@@ -72,14 +73,29 @@ namespace Mazzate
             {
                 //if (guerriero.ingaggia) controllaCollisioni(guerriero, arrayGuerrieri);
                 guerriero.nemicoPiuVicino(arrayGuerrieri[1]);
-                guerriero.muoviVersoNemico(guerriero.obiettivo);
+                if (guerriero.obiettivo != null)
+                {
+                    guerriero.muoviVersoNemico(guerriero.obiettivo);
+                    guerriero.attacca(guerriero.obiettivo);
+                }
             }
             foreach (Guerriero guerriero in arrayGuerrieri[1])
             {
                 //if (guerriero.ingaggia) controllaCollisioni(guerriero, arrayGuerrieri);
                 guerriero.nemicoPiuVicino(arrayGuerrieri[0]);
-                guerriero.muoviVersoNemico(guerriero.obiettivo);
+                if (guerriero.obiettivo != null)
+                {
+                    guerriero.muoviVersoNemico(guerriero.obiettivo);
+                    guerriero.attacca(guerriero.obiettivo);
+                }
             }
+
+            for (int i = 0; i < arrayGuerrieri.Length; i++)
+            {
+                arrayGuerrieri[i].RemoveAll(g => g.puntiVita <= 0);
+                ricaricaStat(i);
+            }
+
 
         }
 
@@ -99,6 +115,7 @@ namespace Mazzate
             }
         }
 
+        /*
         public void controllaIngaggio(List<Guerriero>[] arrayGuer)
         {
             List<Guerriero> lisTemp = new List<Guerriero>();
@@ -157,6 +174,16 @@ namespace Mazzate
         {
             guer.ingaggia = false;
             guer.velMovimento = 10;
+        }
+        */
+
+        public void ricaricaStat(int gioc)
+        {
+            foreach (Guerriero g in arrayGuerrieri[gioc])
+            {
+                if (g.puntiVelocità < 100) g.puntiVelocità += 1;
+                if (g.puntiEnergia < 100) g.puntiEnergia += 1;
+            }
         }
 
         /// <summary>Non funziona bene il margine destro :(</summary>

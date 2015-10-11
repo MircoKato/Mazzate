@@ -6,7 +6,7 @@ using System.Text;
 namespace Mazzate
 {
 
-    public enum danno
+    public enum tipoDanno
     {
         taglio,
         perforazione,
@@ -25,12 +25,13 @@ namespace Mazzate
 
     public class Arma
     {
-        public Arma(categoria tArma, danno tDanno, int vel, int fat)
+        public Arma(categoria tArma, tipoDanno tDanno, int dan, int vel, int fat)
         {
             tipoArma = tArma;
             tipoDanno = tDanno;
             velocita = vel;
             fatica = fat;
+            danno = dan;
 
             switch (tArma)
             {
@@ -44,10 +45,10 @@ namespace Mazzate
             portata *= 64;
         }
 
-
+        public int danno { get; set; }
         public int velocita { get; set; }
         public int fatica { get; set; }
-        public danno tipoDanno { get; set; }
+        public tipoDanno tipoDanno { get; set; }
         public categoria tipoArma { get; set; }
         public float portata { get; set; }
     }
